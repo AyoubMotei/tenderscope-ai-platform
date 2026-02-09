@@ -1,0 +1,1 @@
+# tenderscope-ai-platform
