@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Plateforme e-learning nationale",
+        "organization": "Ministère de l'Éducation",
+        "city": "Rabat",
+        "domain": "informatique",
+        "description": "Développement d'une plateforme digitale pour l'enseignement à distance."
+    },
+    {
+        "title": "Système de gestion hospitalier",
+        "organization": "Ministère de la Santé",
+        "city": "Casablanca",
+        "domain": "informatique",
+        "description": "Développement logiciel pour la gestion des dossiers médicaux."
+    },
+    {
+        "title": "Construction station gaz",
+        "organization": "ONEE",
+        "city": "Agadir",
+        "domain": "énergie",
+        "description": "Construction infrastructure gaz."
+    },
+    {
+        "title": "Application mobile transport urbain",
+        "organization": "Commune de Marrakech",
+        "city": "Marrakech",
+        "domain": "informatique",
+        "description": "Application mobile pour suivi transport public."
+    },
+    {
+        "title": "Maintenance réseau informatique",
+        "organization": "Office des Ports",
+        "city": "Tanger",
+        "domain": "informatique",
+        "description": "Maintenance infrastructure réseau."
+    }
+]
