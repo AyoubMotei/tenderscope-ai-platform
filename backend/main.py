@@ -11,7 +11,7 @@ import models, schemas
 from database import engine, get_db
 from ai_engine import compute_score
 
-# --- Configuration des Logs (Compétence C21) ---
+# --- Configuration des Logs ---
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
