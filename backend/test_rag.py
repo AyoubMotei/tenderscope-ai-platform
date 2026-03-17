@@ -9,7 +9,7 @@ else:
     try:
         # rag_assistant.ingest_documents()
 
-        question = "Quelles sont les certifications requises pour l'appel d'offre de l'Education Nationaleg ?"
+        question = "Quelles sont les certifications requises pour l'appel d'offre de construction de terminaux gaziers ou pétroliers à Agadir ?"
         print(f"\n🔍 Question posée : {question}")
 
         response = rag_assistant.get_response(question)

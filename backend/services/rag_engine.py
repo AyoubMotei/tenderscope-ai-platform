@@ -29,7 +29,7 @@ class RAGEngine:
             base_url="https://router.huggingface.co/v1",
             api_key=HF_TOKEN,
             model="Qwen/Qwen3.5-27B:novita",
-            temperature=0
+            temperature=0.3
         )
         
         self.vector_store = None
@@ -56,10 +56,11 @@ class RAGEngine:
         print(f"🧪 Indexation de {len(chunks)} morceaux en local...")
 
         # Création de la base vectorielle (Tout se passe sur ton PC ici)
-        self.vector_store = Chroma(
+        self.vector_store = Chroma.from_documents(
             documents=chunks,
             embedding=self.embeddings,
-            persist_directory=VECTOR_DB_PATH)
+            persist_directory=VECTOR_DB_PATH
+        )
 
         print(f"✨ Ingestion terminée avec succès en local !")
 
