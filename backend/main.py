@@ -12,7 +12,18 @@ from database import engine, get_db
 from ai_engine import compute_score
 
 
-from services.rag_engine import rag_assistant  # Import de ton moteur fonctionnel
+from services.rag_engine import rag_assistant 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="TenderScope AI - Backend Officiel")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autorise TOUTES les origines (pour le développement)
+    allow_credentials=True,
+    allow_methods=["*"],  # Autorise toutes les méthodes (GET, POST, PUT, DELETE...)
+    allow_headers=["*"],  # Autorise tous les headers
+)
 
 
 # --- Configuration des Logs ---
@@ -27,7 +38,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-app = FastAPI(title="TenderScope AI - Backend Officiel")
 
 # --- Fonctions Utilitaires ---
 def create_access_token(data: dict):
