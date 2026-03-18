@@ -14,6 +14,16 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+    company_name: str
+    sector: str
+    city: str
+    description: str
+    class Config:
+        from_attributes = True
+
 class TenderResponse(BaseModel):
     id: int
     title: str

@@ -80,7 +80,6 @@ Due to project time constraints, the MVP includes only essential features.
 ### Not included
 
 - Real tender scraping
-- Authentication system
 - Real government data integration
 - Large scale data analysis
 - Production deployment
@@ -216,9 +215,8 @@ Database (PostgreSQL)
 
 Frontend
 
-React  
-Vite  
-Axios
+NextJS
+CORSMiddleware
 
 Backend
 
@@ -358,6 +356,18 @@ Step 5
 
 Dashboard displays ranked tenders.
 
+Step 6
+
+User asks a question about a tender.
+
+Step 7
+
+Backend uses RAG to answer the question.
+
+Step 8
+
+Frontend displays the answer.
+
 ---
 
 # 15. Expected Output
@@ -367,6 +377,8 @@ The final application should allow the user to:
 1. Enter company information
 2. Launch analysis
 3. See compatibility scores for tenders
+4. Ask questions about tenders
+5. See answers to questions
 
 The result is a simple AI-powered recommendation system.
 
@@ -379,12 +391,16 @@ During the presentation:
 1. Create a company profile
 2. Run tender analysis
 3. Show ranking of tenders
+4. Ask questions about tenders
+5. Show answers to questions
 
 Explain:
 
 - AI similarity method
 - Architecture
 - Technologies used
+- RAG system
+- Chat history
 
 ---
 
@@ -408,6 +424,8 @@ The project is considered successful if:
 - The AI similarity engine produces scores
 - The frontend displays results
 - The architecture demonstrates full-stack AI development skills
+- The RAG system answers questions about tenders
+- The chat history is displayed
 
 ---
 

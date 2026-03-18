@@ -12,7 +12,18 @@ from database import engine, get_db
 from ai_engine import compute_score
 
 
-from services.rag_engine import rag_assistant  # Import de ton moteur fonctionnel
+from services.rag_engine import rag_assistant 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="TenderScope AI - Backend Officiel")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Autorise TOUTES les origines (pour le développement)
+    allow_credentials=True,
+    allow_methods=["*"],  # Autorise toutes les méthodes (GET, POST, PUT, DELETE...)
+    allow_headers=["*"],  # Autorise tous les headers
+)
 
 
 # --- Configuration des Logs ---
@@ -27,7 +38,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-app = FastAPI(title="TenderScope AI - Backend Officiel")
 
 # --- Fonctions Utilitaires ---
 def create_access_token(data: dict):
@@ -69,6 +79,18 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/users/me", response_model=schemas.UserResponse)
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+    except:
+        raise HTTPException(status_code=401, detail="Token invalide")
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    return user
 
 # --- Endpoints Métier ---
 

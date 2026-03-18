@@ -37,3 +37,4 @@ class ChatHistory(Base):
     question = Column(Text)
     answer = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+

@@ -31,7 +31,7 @@ class RAGEngine:
             model="Qwen/Qwen3.5-27B:novita",
             temperature=0.3,
             presence_penalty=1.0,  # Sortez-les de model_kwargs
-    frequency_penalty=1.0  # Sortez-les de model_kwargs
+            frequency_penalty=1.0  # Sortez-les de model_kwargs
         )
         
         self.vector_store = None
