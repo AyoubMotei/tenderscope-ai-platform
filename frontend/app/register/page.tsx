@@ -58,7 +58,7 @@ export default function RegisterPage() {
       // On log le succès et on enregistre le token
       console.log("Inscription réussie:", data);
       localStorage.setItem("token", data.access_token);
-      
+
       // Redirection après succès (vers dashboard ou accueil)
       router.push("/");
     } catch (err: any) {
@@ -236,7 +236,7 @@ export default function RegisterPage() {
                   </div>
                   <label className="flex flex-col">
                     <p className="text-slate-800 dark:text-slate-200 text-base font-medium leading-normal pb-2">
-                      Parlez-nous de vos objectifs (facultatif)
+                      Parlez-nous de vos objectifs
                     </p>
                     <textarea
                       name="description"
@@ -295,7 +295,7 @@ export default function RegisterPage() {
           {/* Footer Small */}
           <footer className="px-6 md:px-20 lg:px-40 py-8 border-t border-slate-200 dark:border-slate-800">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-              <p>© 2024 Tenderscope AI. Tous droits réservés.</p>
+              <p>© 2026 Tenderscope AI. Tous droits réservés.</p>
               <div className="flex gap-6">
                 <Link className="hover:text-primary" href="#">
                   Aide
