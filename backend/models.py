@@ -29,3 +29,11 @@ class Score(Base):
     score = Column(Float)
     decision = Column(String) # GO, NO-GO, MAYBE
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class ChatHistory(Base):
+    __tablename__ = "chat_history"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    question = Column(Text)
+    answer = Column(Text)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

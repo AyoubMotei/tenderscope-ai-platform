@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
+from datetime import datetime
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -27,3 +28,20 @@ class MatchResponse(BaseModel):
     tender_title: str
     score: float
     decision: str
+
+# --- Nouveaux modèles pour le RAG ---
+
+class QuestionRequest(BaseModel):
+    question: str
+
+class AnswerResponse(BaseModel):
+    question: str
+    answer: str
+
+class ChatHistoryResponse(BaseModel):
+    id: int
+    question: str
+    answer: str
+    created_at: datetime
+    class Config:
+        from_attributes = True

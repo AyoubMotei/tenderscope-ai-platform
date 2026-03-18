@@ -29,7 +29,9 @@ class RAGEngine:
             base_url="https://router.huggingface.co/v1",
             api_key=HF_TOKEN,
             model="Qwen/Qwen3.5-27B:novita",
-            temperature=0.3
+            temperature=0.3,
+            presence_penalty=1.0,  # Sortez-les de model_kwargs
+    frequency_penalty=1.0  # Sortez-les de model_kwargs
         )
         
         self.vector_store = None
