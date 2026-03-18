@@ -48,7 +48,7 @@ export default function LoginPage() {
       localStorage.setItem("token", data.access_token);
 
       // Redirection après succès (vers dashboard ou accueil)
-      router.push("/");
+      router.push("/dashboard");
     } catch (err: any) {
       setError(err.message);
     } finally {

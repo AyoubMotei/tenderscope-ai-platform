@@ -59,8 +59,8 @@ export default function RegisterPage() {
       console.log("Inscription réussie:", data);
       localStorage.setItem("token", data.access_token);
 
-      // Redirection après succès (vers dashboard ou accueil)
-      router.push("/");
+      // Redirection après succès
+      router.push("/login");
     } catch (err: any) {
       setError(err.message);
     } finally {

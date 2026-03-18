@@ -80,6 +80,18 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
+@app.get("/users/me", response_model=schemas.UserResponse)
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+    except:
+        raise HTTPException(status_code=401, detail="Token invalide")
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+    return user
+
 # --- Endpoints Métier ---
 
 @app.get("/tenders", response_model=list[schemas.TenderResponse])
