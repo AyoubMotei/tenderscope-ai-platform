@@ -6,10 +6,14 @@ from datetime import datetime, timedelta
 import jose.jwt as jwt
 from passlib.context import CryptContext
 import os
-
+from typing import List, Optional
 import models, schemas
 from database import engine, get_db
 from ai_engine import compute_score
+
+
+from services.rag_engine import rag_assistant  # Import de ton moteur fonctionnel
+
 
 # --- Configuration des Logs ---
 logging.basicConfig(level=logging.INFO)
@@ -104,3 +108,73 @@ def match_tenders(token: str = Depends(oauth2_scheme), db: Session = Depends(get
     db.commit()
     logger.info(f"Matching réussi pour l'utilisateur {user.email}")
     return sorted(results, key=lambda x: x["score"], reverse=True)
+
+
+@app.post("/ask-tender", response_model=schemas.AnswerResponse)
+async def ask_tender_question(
+    request: schemas.QuestionRequest, 
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)  
+):
+    try:
+        # 1. Identification de l'utilisateur via le token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        user = db.query(models.User).filter(models.User.email == email).first()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+
+        # 2. Appel au moteur RAG
+        result_rag = rag_assistant.get_response(request.question)
+        answer_text = result_rag['result']
+        
+        # 3. SAUVEGARDE DANS LA BASE DE DONNÉES (L'étape manquante !)
+        new_chat = models.ChatHistory(
+            user_id=user.id,
+            question=request.question,
+            answer=answer_text
+        )
+        db.add(new_chat)
+        db.commit() # On valide l'écriture dans PostgreSQL
+        
+        logger.info(f"Question stockée en DB pour l'utilisateur : {email}")
+
+        return schemas.AnswerResponse(
+            question=request.question,
+            answer=answer_text
+        )
+    except Exception as e:
+        logger.error(f"Erreur: {str(e)}")
+        raise HTTPException(status_code=500, detail="Erreur interne du serveur")
+
+
+
+@app.get("/chat-history", response_model=List[schemas.ChatHistoryResponse])
+async def get_chat_history(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+):
+    """
+    Récupère l'historique des questions/réponses de l'utilisateur connecté.
+    """
+    try:
+        # 1. Identifier l'utilisateur via le token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        user = db.query(models.User).filter(models.User.email == email).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
+
+        # 2. Récupérer l'historique trié par date (du plus récent au plus ancien)
+        history = db.query(models.ChatHistory)\
+            .filter(models.ChatHistory.user_id == user.id)\
+            .order_by(models.ChatHistory.created_at.desc())\
+            .all()
+
+        return history
+
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération de l'historique : {str(e)}")
+        raise HTTPException(status_code=500, detail="Erreur interne du serveur")
