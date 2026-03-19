@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface Tender {
@@ -26,7 +26,7 @@ interface EnrichedTender {
   decision: string | null;
 }
 
-export default function DashboardPage() {
+function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("q")?.toLowerCase() || "";
@@ -275,3 +275,15 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="animate-pulse space-y-8">
+      <div className="h-32 bg-slate-100 dark:bg-slate-800 rounded-3xl"></div>
+      <div className="h-64 bg-slate-100 dark:bg-slate-800 rounded-2xl"></div>
+    </div>}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+

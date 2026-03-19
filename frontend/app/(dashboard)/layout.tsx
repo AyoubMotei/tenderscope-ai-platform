@@ -1,8 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+function SearchBar({ onSearch, initialValue }: { onSearch: (val: string) => void, initialValue: string }) {
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(initialValue || searchParams.get("q") || "");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    onSearch(e.target.value);
+  };
+
+  return (
+    <div className="relative w-96 hidden md:block">
+      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearch}
+        placeholder="            Rechercher par titre ou domaine..."
+        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm transition-all"
+      />
+    </div>
+  );
+}
 
 export default function DashboardLayout({
   children,
@@ -11,10 +34,8 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [userName, setUserName] = useState("Utilisateur");
   const [userEmail, setUserEmail] = useState("SME User");
-  const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,11 +72,10 @@ export default function DashboardLayout({
     router.push("/");
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    const params = new URLSearchParams(searchParams);
-    if (e.target.value) {
-      params.set('q', e.target.value);
+  const onSearchInternal = (val: string) => {
+    const params = new URLSearchParams(window.location.search);
+    if (val) {
+      params.set('q', val);
     } else {
       params.delete('q');
     }
@@ -119,22 +139,11 @@ export default function DashboardLayout({
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Header */}
         <header className="h-20 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/20 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-10 shrink-0">
-          <div className="relative w-96 hidden md:block">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearch}
-              placeholder="            Rechercher par titre ou domaine..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm transition-all"
-            />
-          </div>
+          <Suspense fallback={<div className="w-96 h-10 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-xl"></div>}>
+            <SearchBar onSearch={onSearchInternal} initialValue="" />
+          </Suspense>
 
           <div className="flex items-center gap-4">
-            {/* <button className="size-10 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 relative">
-                <span className="material-symbols-outlined">notifications</span>
-                <span className="absolute top-2 right-2 size-2 bg-red-500 rounded-full"></span>
-              </button> */}
             <button
               onClick={handleLogout}
               className="flex items-center justify-center gap-2 hover:bg-red-50 dark:hover:bg-red-900/10 text-red-600 dark:text-red-400 rounded-xl px-4 py-2 transition-all font-medium text-sm border border-transparent hover:border-red-200 dark:hover:border-red-800"
@@ -148,10 +157,13 @@ export default function DashboardLayout({
         {/* Page Content */}
         <div className="flex-1 overflow-auto p-8 bg-background-light dark:bg-background-dark">
           <div className="max-w-6xl mx-auto">
-            {children}
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
+              {children}
+            </Suspense>
           </div>
         </div>
       </main>
     </div>
   );
 }
+
