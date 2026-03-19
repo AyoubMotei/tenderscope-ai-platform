@@ -2,8 +2,8 @@
 ## Intelligent Analyzer for Moroccan Public Tenders
 
 Version: 1.0  
-Project Type: Final Academic Project (Fil Rouge)  
-Author: Student Project – AI Developer Training  
+Project Type: Final Academic Project (File Rouge)  
+Author: AYOUB MOTEI 
 Date: 2026
 
 ---
@@ -194,7 +194,7 @@ Performance is not critical due to the small dataset.
 # 8. System Architecture
 
 The project follows a simple full-stack architecture.
-Frontend (React)
+Frontend (NextJS)
 
 ↓
 
@@ -216,7 +216,7 @@ Database (PostgreSQL)
 Frontend
 
 NextJS
-CORSMiddleware
+Tailwind CSS
 
 Backend
 
@@ -332,6 +332,16 @@ Get matching results
 
 GET /scores
 
+Send message
+
+POST /chat
+
+Get chat history
+
+GET /chat
+
+
+
 ---
 
 # 14. User Flow
@@ -384,27 +394,8 @@ The result is a simple AI-powered recommendation system.
 
 ---
 
-# 16. Demonstration Scenario
 
-During the presentation:
-
-1. Create a company profile
-2. Run tender analysis
-3. Show ranking of tenders
-4. Ask questions about tenders
-5. Show answers to questions
-
-Explain:
-
-- AI similarity method
-- Architecture
-- Technologies used
-- RAG system
-- Chat history
-
----
-
-# 17. Future Improvements
+# 16. Future Improvements
 
 Possible future improvements include:
 
@@ -416,7 +407,7 @@ Cloud deployment
 
 ---
 
-# 18. Success Criteria
+# 17. Success Criteria
 
 The project is considered successful if:
 
