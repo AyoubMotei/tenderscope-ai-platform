@@ -82,3 +82,5 @@ coverage/
 
 tmp/
 temp/
+
+backend/chroma_db/
