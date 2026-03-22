@@ -1,0 +1,3 @@
+question,answer,contexts,ground_truth,faithfulness,answer_relevancy,context_precision
+Quelles sont les certifications requises pour l'appel d'offre de construction de terminaux gaziers à Agadir ?,"Les certifications requises sont ISO 9001, ISO 14001, ISO 45001","['Le candidat doit justifier des certifications ISO 9001, 14001 et 45001 pour les projets gaziers à Agadir.']","Le candidat doit avoir les certifications ISO 9001, 14001 et 45001.",0.95,0.92,0.9
+Quel est le montant du budget annuel estimé pour ce marché ?,"Montant : 3 200 000,00 MAD (Trois millions deux cent mille dirhams).","['Le budget global annuel pour ce marché de maintenance est fixé à 3,2 MDH.']","Le budget annuel est de 3,2 millions de dirhams (3,2 MDH).",1.0,0.98,0.95
