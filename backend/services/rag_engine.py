@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
-from langchain_huggingface import HuggingFaceEmbeddings # Import local
+from langchain_huggingface import HuggingFaceEmbeddings 
 from langchain_classic.chains import RetrievalQA
 from langchain_core.prompts import PromptTemplate
 from langchain_chroma import Chroma
@@ -19,8 +19,8 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 
 class RAGEngine:
     def __init__(self):
-        print("⏳ Chargement du modèle d'embedding local (HuggingFace)...")
-        # Solution 3 : Embedding local pour éviter les erreurs 504
+        print("Chargement du modèle d'embedding local (HuggingFace)...")
+        # Embedding local pour éviter les erreurs 504
         # 'intfloat/e5-base-v2' est excellent pour le multilingue (Français/Anglais)
         self.embeddings = HuggingFaceEmbeddings(model_name="intfloat/e5-base-v2")
         
@@ -44,30 +44,30 @@ class RAGEngine:
             
         for file in os.listdir(DOCS_PATH):
             if file.endswith(".pdf"):
-                print(f"📖 Lecture de {file}...")
+                print(f"Lecture de {file}...")
                 loader = PyPDFLoader(os.path.join(DOCS_PATH, file))
                 all_docs.extend(loader.load())
         
         if not all_docs:
-            print("❌ Aucun document PDF trouvé.")
+            print("Aucun document PDF trouvé.")
             return
 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
         chunks = text_splitter.split_documents(all_docs)
         
-        print(f"🧪 Indexation de {len(chunks)} morceaux en local...")
+        print(f"Indexation de {len(chunks)} morceaux en local...")
 
-        # Création de la base vectorielle (Tout se passe sur ton PC ici)
+        # Création de la base vectorielle 
         self.vector_store = Chroma.from_documents(
             documents=chunks,
             embedding=self.embeddings,
             persist_directory=VECTOR_DB_PATH
         )
 
-        print(f"✨ Ingestion terminée avec succès en local !")
+        print(f"Ingestion terminée avec succès en local !")
 
     def get_response(self, query: str):
-        """Répond à une question via Gemini en utilisant le contexte local"""
+        """Répond à une question via Qwen en utilisant le contexte local"""
         if not self.vector_store:
             self.vector_store = Chroma(
                 persist_directory=VECTOR_DB_PATH,
