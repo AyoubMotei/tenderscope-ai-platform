@@ -9,7 +9,7 @@ from ragas.metrics import (
 )
 from dotenv import load_dotenv
 
-# Charger les variables d'environnement (y compris OPENAI_API_KEY)
+# Charger les variables d'environnement 
 load_dotenv()
 
 def main():
@@ -43,8 +43,6 @@ def main():
     print("Lancement de l'évaluation des métriques RAGAS : Faithfulness, Answer Relevancy, Context Precision...")
     
     # Exécution de la suite d'évaluation MLOps de RAGAS
-    # Note : Par défaut RAGAS nécessite qu'une variable `OPENAI_API_KEY` soit exportée (ou LLM explicitement injecté)
-    # pour que ses LLM de type juge évaluent ces exemples.
     results = evaluate(
         dataset=dataset,
         metrics=[
