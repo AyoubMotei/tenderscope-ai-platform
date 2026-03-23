@@ -21,9 +21,9 @@ def seed_data():
                 )
                 db.add(new_tender)
         db.commit()
-        print("✅ Base de données initialisée avec les appels d'offres !")
+        print("Base de données initialisée avec les appels d'offres !")
     else:
-        print("ℹ️ La base contient déjà des données.")
+        print("La base contient déjà des données.")
     db.close()
 
 if __name__ == "__main__":
