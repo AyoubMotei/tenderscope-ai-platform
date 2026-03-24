@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - master
-      - 'feature/MLOps'
+      - 'feature/Devops'
   pull_request:
     branches:
       - main
       - master
-      - 'feature/MLOps'
+      - 'feature/Devops'
 
 jobs:
   validate-and-evaluate:
